@@ -13,11 +13,29 @@
   <title>ZhengShouZi</title>
 
   <script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
-  <script type="text/javascript">
-    $(document).ready(function() {
 
-    });
+    <script type="text/javascript">
+            function changeImg() {
+              var imgSrc = $("#imgObj");
+              var src = imgSrc.attr("src");
+              alert(src)
+              imgSrc.attr("src", chgUrl(src));
+            }
+    //时间戳
+    //为了使每次生成图片不一致，即不让浏览器读缓存，所以需要加上时间戳
+    function chgUrl(url) {
+      alert(url.indexOf("?"));
+      var timestamp = (new Date()).valueOf();
+      if ((url.indexOf("?") >= 0)) {
+
+        url = url.substr(0,url.indexOf("?")) +"?timestamp="+ timestamp;
+      } else {
+        url = url + "?timestamp=" + timestamp;
+      }
+      return url;
+      }
   </script>
+
 
   <style type="text/css">
     * {
@@ -152,7 +170,8 @@
       <br style="clear: both;">
       <p>
         <label>CheckCode</label>
-        <input name="checkcode" class="text-input" type="text">
+        <input name="checkcode" class="text-input" type="text"><img id="imgObj" alt="验证码" src="${pageContext.request.contextPath}/code.do" />
+        <a href="" onclick="changeImg()">换一张</a>
       </p>
 
       <br style="clear: both;">
@@ -160,6 +179,8 @@
         <input class="button" type="submit" value="Sign Up">
       </p>
     </form>
+
+    <span style="">${pageContext.request.getAttribute("code")}</span>
   </div>
 </div>
 <div id="dummy"></div>
