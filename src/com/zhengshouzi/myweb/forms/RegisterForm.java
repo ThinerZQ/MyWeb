@@ -10,9 +10,9 @@ import java.util.Date;
 public class RegisterForm {
     private String email;
     private String password;
-    private String status=String.valueOf(0);//¼¤»î×´Ì¬
-    private String activatecode;//¼¤»îÂë
-    private Timestamp registerTime;//×¢²áÊ±¼ä
+    private String status=String.valueOf(0);//ï¿½ï¿½ï¿½ï¿½×´Ì¬
+    private String activatecode;//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    private Timestamp registerTime;//×¢ï¿½ï¿½Ê±ï¿½ï¿½
 
     public String getEmail() {
         return email;
@@ -31,8 +31,6 @@ public class RegisterForm {
     public void setStatus(String status) {
         this.status = status;
     }
-
-
 
     public void setRegisterTime(Timestamp registerTime) {
         this.registerTime = registerTime;
@@ -54,8 +52,16 @@ public class RegisterForm {
         return registerTime;
     }
 
-
-
+    @Override
+    public String toString() {
+        return "RegisterForm{" +
+                "email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", status='" + status + '\'' +
+                ", activatecode='" + activatecode + '\'' +
+                ", registerTime=" + registerTime +
+                '}';
+    }
 
     public Date getLastActivateTime() {
         Calendar cl = Calendar.getInstance();

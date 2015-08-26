@@ -12,8 +12,6 @@ package com.zhengshouzi.myweb.tools;
         import org.springframework.messaging.MessagingException;
         import javax.mail.internet.MimeMessage;
         import javax.annotation.Resource;
-
-
 /**
  *
  * @author Qixuan.Chen
@@ -23,47 +21,60 @@ public class SendMail {
     @Resource(name = "mailSender")
     private JavaMailSender javaMailSender;
 
-    public boolean sendMail() throws MessagingException {
+    public boolean sendSimpleMail(MailBean mailBean) throws MessagingException {
 
         SimpleMailMessage mail = new SimpleMailMessage();
         try {
-            mail.setTo("281023005@qq.com");// 接受者
-            mail.setFrom("601097836@qq.com");// 发送者
-            mail.setSubject("zq love lmm");// 主题
-            mail.setText("I am test spring mail ,love you ,what are you doing");// 邮件内容
+            mail.setTo(mailBean.getToEmail());// 接受者
+            mail.setFrom(mailBean.getFrom());// 发送者
+            mail.setSubject(mailBean.getSubject());// 主题
+            mail.setText(mailBean.getText());// 邮件内容
+
             javaMailSender.send(mail);
+
             System.out.println("发送完毕");
         } catch (Exception e) {
             e.printStackTrace();
+            return false;
         }
         return true;
     }
 
 
-    public boolean sendHtmlMail() throws javax.mail.MessagingException {
+    public boolean sendHtmlMail(MailBean mailBean) throws javax.mail.MessagingException {
+
         javax.mail.internet.MimeMessage mm = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(mm, true, "utf-8");
-        try {
-            helper.setTo("281023005@qq.com");// 接受者
-            helper.setFrom("601097836@qq.com");// 发送者
-            helper.setSubject("邮件主题 mess character");// 主题
-            helper.setText("<html><head></head><body><h1><a href='http://www.baidu.com'>hello!!lmm click me to baidu</a></h1></body></html>",true);// 第二个参数代表发送的是正文是html
-            javaMailSender.send(mm);
-            System.out.println("发送完毕");
-        } catch (Exception e) {
-            e.printStackTrace();
+
+        if(checkMailBean(mailBean)) {
+            try {
+                helper.setTo(mailBean.getToEmail());// 接受者
+                helper.setFrom(mailBean.getFrom(), mailBean.getFromName());// 发送者
+                helper.setSubject(mailBean.getSubject());// 主题
+                helper.setText((String) mailBean.getData().get("link_address"), true);// 第二个参数代表发送的是正文是html
+
+                System.out.println(mailBean.toString());
+
+
+                javaMailSender.send(mm);
+                System.out.println("发送完毕");
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
         }
+
         return true;
     }
-    public boolean sendFileMail() throws javax.mail.MessagingException {
+    public boolean sendFileMail(MailBean mailBean) throws javax.mail.MessagingException {
         MimeMessage mm = javaMailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(mm, true, "utf-8");
+        MimeMessageHelper helper = new MimeMessageHelper(mm, true, "GBK");
         try {
-            helper.setTo("281023005@qq.com");// 接受者
-            helper.setFrom("601097836@qq.com");// 发送者
-            helper.setSubject("邮件主题 mess character");// 主题
-            helper.setText("邮件内容 content with attachment");// 邮件内容
+            helper.setTo(mailBean.getToEmail());// 接受者
+            helper.setFrom(mailBean.getFrom(), mailBean.getFromName());// 发送者
+            helper.setSubject(mailBean.getSubject());// 主题
 
+            helper.setText(mailBean.getText());// 邮件内容
             //多个附件文件
             ClassPathResource in = new ClassPathResource("lmm.txt");
             ClassPathResource in2 = new ClassPathResource("attachment.txt");
@@ -90,10 +101,10 @@ public class SendMail {
         if (mailBean.getSubject() == null) {
             return false;
         }
-        if (mailBean.getToEmails() == null) {
+        if (mailBean.getToEmail() == null) {
             return false;
         }
-        if (mailBean.getTemplate() == null) {
+        if (mailBean.getFrom() == null){
             return false;
         }
         return true;

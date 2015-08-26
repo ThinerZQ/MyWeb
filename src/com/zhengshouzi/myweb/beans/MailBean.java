@@ -4,6 +4,7 @@ package com.zhengshouzi.myweb.beans;
  * Created by zhengshouzi on 2015/8/24.
  */
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Map;
 
 
@@ -12,11 +13,11 @@ public class MailBean implements Serializable {
     private String from;
     private String fromName;
     private String[] toEmails;
-
+    private String toEmail;
     private String subject;
-
+private String Text;
     private Map data ;          //邮件数据
-    private String template;    //邮件模板
+
 
     public String getFrom() {
         return from;
@@ -38,8 +39,12 @@ public class MailBean implements Serializable {
         return data;
     }
 
-    public String getTemplate() {
-        return template;
+    public String getToEmail() {
+        return toEmail;
+    }
+
+    public void setToEmail(String toEmail) {
+        this.toEmail = toEmail;
     }
 
     public void setFrom(String from) {
@@ -62,7 +67,24 @@ public class MailBean implements Serializable {
         this.data = data;
     }
 
-    public void setTemplate(String template) {
-        this.template = template;
+    public String getText() {
+        return Text;
+    }
+
+    public void setText(String text) {
+        Text = text;
+    }
+
+    @Override
+    public String toString() {
+        return "MailBean{" +
+                "from='" + from + '\'' +
+                ", fromName='" + fromName + '\'' +
+                ", toEmails=" + Arrays.toString(toEmails) +
+                ", toEmail='" + toEmail + '\'' +
+                ", subject='" + subject + '\'' +
+                ", Text='" + Text + '\'' +
+                ", data=" + data +
+                '}';
     }
 }

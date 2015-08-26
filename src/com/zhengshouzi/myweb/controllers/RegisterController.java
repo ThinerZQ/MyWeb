@@ -54,11 +54,15 @@ public class RegisterController{
         String email = httpServletRequest.getParameter("email");//获取email
         String validateCode = httpServletRequest.getParameter("validateCode");//激活码
 
+        System.out.println("activate email"+ email);
+
         try {
             registerService.processActivate(email, validateCode);//调用激活方法
             mav.setViewName("activate_success");
         } catch (ServiceException e) {
            mav.addObject("errorMassage",e.getMessage());
+            mav.setViewName("activate_fail");
+            e.printStackTrace();
         }
         return  mav;
 

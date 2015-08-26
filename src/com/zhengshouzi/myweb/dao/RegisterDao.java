@@ -8,4 +8,5 @@ public interface RegisterDao {
     public boolean register(RegisterForm registerForm);
     public RegisterForm findByEmail(String email);
     public boolean updateRegisterStatus(String email,String status);
+    public boolean deleteRegisterByEmail(String Email);
 }
